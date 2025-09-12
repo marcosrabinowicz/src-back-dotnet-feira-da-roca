@@ -1,20 +1,19 @@
-using FeiraDaRoca.Data;
 using FeiraDaRoca.Models;
-using Microsoft.EntityFrameworkCore;
+using FeiraDaRoca.Repositories;
 
 namespace FeiraDaRoca.Services;
 
 public class ProdutoService : IProdutoService
 {
-    private readonly AppDbContext _context;
+    private readonly IProdutoRepository _repository;
 
-    public ProdutoService(AppDbContext context)
+    public ProdutoService(IProdutoRepository repository)
     {
-        _context = context;
+        _repository = repository;
     }
 
     public async Task<List<Produto>> ListarTodos()
     {
-        return await _context.Produtos.ToListAsync();
+        return await _repository.ListarTodos();
     }
 }
