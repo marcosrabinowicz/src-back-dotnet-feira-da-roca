@@ -11,13 +11,14 @@ Gerencia **feirantes** e os **produtos** que cada um vende.
 - Cadastro, listagem, edição e exclusão de **Produtos**
 - Relacionamento 1:N: **Um Feirante → Muitos Produtos**
 - Banco de dados **SQLite** persistente
-- Código limpo com async/await e boas práticas
+- Camadas organizadas: `Controller → Service → Repository`
+- Testes via **Postman Collection** incluída no projeto
 
 ---
 
 ## 🔧 Tecnologias utilizadas
 
-- .NET 9 (preview)
+- .NET 8 (preview)
 - ASP.NET Core Web API
 - Entity Framework Core
 - SQLite
@@ -28,6 +29,7 @@ Gerencia **feirantes** e os **produtos** que cada um vende.
 ## 📦 Endpoints principais
 
 ### Feirantes
+
 - `GET /feirantes`
 - `GET /feirantes/{id}`
 - `POST /feirantes`
@@ -35,6 +37,7 @@ Gerencia **feirantes** e os **produtos** que cada um vende.
 - `DELETE /feirantes/{id}`
 
 ### Produtos
+
 - `GET /produtos`
 - `GET /produtos/{id}`
 - `POST /produtos`
@@ -46,35 +49,49 @@ Gerencia **feirantes** e os **produtos** que cada um vende.
 ## 🧪 Como testar
 
 1. Rode o projeto com:
+
    ```bash
    dotnet run
-Acesse a API com Postman ou Insomnia
 
-Exemplo de cadastro de produto:
+   ```
 
-json
-Copiar
-Editar
-POST /produtos
-{
-  "nome": "Queijo Minas Frescal",
-  "preco": 22.90,
-  "feiranteId": 1
-}
-📘 Próximos passos
- Separar em camadas (Controller → Service → Repository)
+2. Use o Postman com a collection:
+   feira-da-roca-api.postman_collection.json
 
- Adicionar validações com DataAnnotations
+✅ Estrutura do Projeto
 
- Documentar com Swagger
+FeiraDaRoca/
+├── Controllers/
+├── Services/
+├── Repositories/
+├── Models/
+├── Data/
+├── Program.cs
+├── feira-da-roca-api.postman_collection.json
+└── README.md
 
- Implementar paginação e filtros avançados
+🧱 Conclusão do Ciclo 4 – Estradão Batido
 
- Criar testes automatizados com xUnit
+- Separação completa em camadas (Service, Repository)
+- Teste bem-sucedido do endpoint GET /produtos
+- Refatoração limpa e funcional da lógica de negócio
+- Tudo funcionando com persistência em SQLite
+- Testado com Postman
 
- Subir para deploy no GitHub Pages + GitHub Actions (ou outro)
+🐞 Pendências para próximos ciclos
 
- Criar um frontend Angular para consumo da API
+- Corrigir o problema do campo Feirante vindo null após POST /produtos
+- Corrigir GET /feirantes para incluir produtos na resposta (Include)
+- Adicionar documentação Swagger
+- Adicionar validações com DataAnnotations
+
+🛠️ Próximos passos
+
+- Separar camadas de Feirante (service e repository)
+- Implementar filtros e paginação (ex: por cidade)
+- Criar testes automatizados com xUnit
+- Criar DTOs ou usar AutoMapper
+- Criar frontend simples em React ou Vue
 
 🤠 Autor
 Desenvolvido com 💙 por Marcos Rabinowicz
