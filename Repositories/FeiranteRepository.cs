@@ -15,6 +15,6 @@ public class FeiranteRepository : IFeiranteRepository
 
     public async Task<List<Feirante>> ListarTodos()
     {
-        return await _context.Feirantes.ToListAsync();
+        return await _context.Feirantes.Include(f => f.Produtos).ToListAsync();
     }
 }
