@@ -14,6 +14,9 @@ builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
+builder.Services.AddScoped<IFeiranteService, FeiranteService>();
+
+builder.Services.AddScoped<IFeiranteRepository, FeiranteRepository>();
 
 var app = builder.Build();
 

@@ -2,17 +2,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FeiraDaRoca.Models;
 using FeiraDaRoca.Data;
+using FeiraDaRoca.Services;
 
 namespace FeiraDaRoca.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class FeirantesController(AppDbContext context) : ControllerBase
+public class FeirantesController(AppDbContext context, IFeiranteService service) : ControllerBase
 {
     private readonly AppDbContext _context = context;
 
+    private readonly IFeiranteService _service = service;
+
     [HttpGet]
-    public async Task<IActionResult> Get() => Ok(await _context.Feirantes.ToListAsync());
+    public async Task<IActionResult> Get()
+    {
+        var feirantes = await _service.ListarTodos();
+        return Ok(feirantes);
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
