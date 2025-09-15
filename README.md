@@ -12,6 +12,7 @@ Gerencia **feirantes** e os **produtos** que cada um vende.
 - Relacionamento 1:N: **Um Feirante → Muitos Produtos**
 - Banco de dados **SQLite** persistente
 - Camadas organizadas: `Controller → Service → Repository`
+- **Validações com DataAnnotations** nos modelos
 - Testes via **Postman Collection** incluída no projeto
 
 ---
