@@ -56,6 +56,8 @@ Gerencia **feirantes** e os **produtos** que cada um vende.
 
    ```
 
+---
+
 2. Use o Postman com a collection:
    feira-da-roca-api.postman_collection.json
 
@@ -71,6 +73,15 @@ FeiraDaRoca/
 ├── feira-da-roca-api.postman_collection.json
 └── README.md
 
+---
+
+## 📘 Documentação com Swagger
+
+Acesse em: `http://localhost:5000/swagger`  
+A API está documentada automaticamente com Swagger, permitindo testar endpoints diretamente no navegador.
+
+---
+
 🧱 Conclusão do Ciclo 4 – Estradão Batido
 
 - Separação completa em camadas (Service, Repository)
@@ -78,12 +89,12 @@ FeiraDaRoca/
 - Refatoração limpa e funcional da lógica de negócio
 - Tudo funcionando com persistência em SQLite
 - Testado com Postman
+- Documentado com Swagger
 
 🐞 Pendências para próximos ciclos
 
 - Corrigir o problema do campo Feirante vindo null após POST /produtos
 - Corrigir GET /feirantes para incluir produtos na resposta (Include)
-- Adicionar documentação Swagger
 - Adicionar validações com DataAnnotations
 
 🛠️ Próximos passos
