@@ -15,6 +15,10 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
@@ -26,5 +30,9 @@ builder.Services.AddScoped<IFeiranteRepository, FeiranteRepository>();
 var app = builder.Build();
 
 app.MapControllers();
+
+app.UseSwagger();
+
+app.UseSwaggerUI();
 
 app.Run();
