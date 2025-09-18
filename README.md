@@ -1,110 +1,67 @@
-# 🐴 Feira da Roça API (.NET + EF Core + SQLite)
+# 🐴 Feira da Roça API – Continuação do Projeto (Ciclo 5 em diante)
 
-API RESTful desenvolvida com ASP.NET Core, Entity Framework Core e SQLite, no melhor estilo raiz do interior.  
-Gerencia **feirantes** e os **produtos** que cada um vende.
-
----
-
-## 🚀 Funcionalidades atuais
-
-- Cadastro, listagem, edição e exclusão de **Feirantes**
-- Cadastro, listagem, edição e exclusão de **Produtos**
-- Relacionamento 1:N: **Um Feirante → Muitos Produtos**
-- Banco de dados **SQLite** persistente
-- Camadas organizadas: `Controller → Service → Repository`
-- **Validações com DataAnnotations** nos modelos
-- Testes via **Postman Collection** incluída no projeto
+Este README documenta a continuação do projeto **Feira da Roça API**, agora estruturado com camadas organizadas e recursos mais avançados.
 
 ---
 
-## 🔧 Tecnologias utilizadas
+## ✅ Estado atual do projeto
 
-- .NET 8 (preview)
-- ASP.NET Core Web API
-- Entity Framework Core
-- SQLite
-- C# moderno (records, construtores enxutos)
-
----
-
-## 📦 Endpoints principais
-
-### Feirantes
-
-- `GET /feirantes`
-- `GET /feirantes/{id}`
-- `POST /feirantes`
-- `PUT /feirantes/{id}`
-- `DELETE /feirantes/{id}`
-
-### Produtos
-
-- `GET /produtos`
-- `GET /produtos/{id}`
-- `POST /produtos`
-- `PUT /produtos/{id}`
-- `DELETE /produtos/{id}`
+- CRUD completo para **Feirantes** e **Produtos**
+- Relacionamento 1:N entre `Feirante` e `Produto`
+- Banco de dados **SQLite** com EF Core
+- Camadas implementadas:
+  - Controller → Service → Repository
+- Validações com DataAnnotations aplicadas
+- Swagger documentando todos os endpoints
+- Testes realizados com Postman (collection incluída)
+- Código versionado no GitHub com histórico limpo
 
 ---
 
-## 🧪 Como testar
+## 🐞 Bugs registrados para resolver
 
-1. Rode o projeto com:
-
-   ```bash
-   dotnet run
-
-   ```
+- [ ] `POST /produtos` retorna `Feirante: null` mesmo com `FeiranteId` válido
+- [ ] `GET /feirantes` não carrega produtos se não usar `.Include(f => f.Produtos)`
+  - Corrigido com `ReferenceHandler.IgnoreCycles` no `Program.cs`
 
 ---
 
-2. Use o Postman com a collection:
-   feira-da-roca-api.postman_collection.json
+## 📌 Próximos passos (a partir deste ciclo)
 
-✅ Estrutura do Projeto
-
-FeiraDaRoca/
-├── Controllers/
-├── Services/
-├── Repositories/
-├── Models/
-├── Data/
-├── Program.cs
-├── feira-da-roca-api.postman_collection.json
-└── README.md
+- [ ] Criar filtros nos endpoints (`?cidade=...`, `?feiranteId=...`)
+- [ ] Implementar paginação (`page`, `pageSize`)
+- [ ] Adicionar testes automatizados com xUnit
+- [ ] Incluir comentários XML para melhorar o Swagger
+- [ ] Preparar o deploy da API para uso público
+- [ ] (Opcional) Criar frontend em React/Vue para consumo da API
 
 ---
 
-## 📘 Documentação com Swagger
+## 🚀 Como rodar
 
-Acesse em: `http://localhost:5000/swagger`  
-A API está documentada automaticamente com Swagger, permitindo testar endpoints diretamente no navegador.
+```bash
+dotnet restore
+dotnet ef database update
+dotnet run
+```
+
+Acesse o Swagger:
+
+```
+http://localhost:5000/swagger
+```
 
 ---
 
-🧱 Conclusão do Ciclo 4 – Estradão Batido
+## 📫 Contato
 
-- Separação completa em camadas (Service, Repository)
-- Teste bem-sucedido do endpoint GET /produtos
-- Refatoração limpa e funcional da lógica de negócio
-- Tudo funcionando com persistência em SQLite
-- Testado com Postman
-- Documentado com Swagger
+Desenvolvido por **Marcos Rabinowicz – Neshama Tech**  
+Com carinho, simplicidade e código raiz 🐴☕
 
-🐞 Pendências para próximos ciclos
+---
 
-- Corrigir o problema do campo Feirante vindo null após POST /produtos
-- Corrigir GET /feirantes para incluir produtos na resposta (Include)
-- Adicionar validações com DataAnnotations
+## ✅ Coleção do postman
 
-🛠️ Próximos passos
+Acesse o arquivo:
 
-- Separar camadas de Feirante (service e repository)
-- Implementar filtros e paginação (ex: por cidade)
-- Criar testes automatizados com xUnit
-- Criar DTOs ou usar AutoMapper
-- Criar frontend simples em React ou Vue
-
-🤠 Autor
-Desenvolvido com 💙 por Marcos Rabinowicz
-Feito na roça, com café coado, queijo na chapa e .NET na alma ☕🐴
+feira-da-roca-api.postman_collection.json

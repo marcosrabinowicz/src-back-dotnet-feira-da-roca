@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using FeiraDaRoca.Models;
-using FeiraDaRoca.Data;
 using FeiraDaRoca.Services;
 
 namespace FeiraDaRoca.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class FeirantesController(AppDbContext context, IFeiranteService service) : ControllerBase
+public class FeirantesController : ControllerBase
 {
-    private readonly AppDbContext _context = context;
+    private readonly IFeiranteService _service;
 
-    private readonly IFeiranteService _service = service;
+    public FeirantesController(IFeiranteService service)
+    {
+        _service = service;
+    }
 
     [HttpGet]
     public async Task<IActionResult> Get()
@@ -24,56 +25,41 @@ public class FeirantesController(AppDbContext context, IFeiranteService service)
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var feirante = await _context.Feirantes.FindAsync(id);
-
+        var feirante = await _service.BuscarPorId(id);
         return feirante == null ? NotFound() : Ok(feirante);
     }
 
     [HttpGet("cidade/{cidade}")]
     public async Task<IActionResult> GetByCidade(string cidade)
     {
-        var feirantesNaCidade = await _context.Feirantes.Where(f => f.Cidade.Equals(cidade, StringComparison.OrdinalIgnoreCase)).ToListAsync();
-
-        return feirantesNaCidade.Count != 0 ? Ok(feirantesNaCidade) : NotFound();
+        var feirantesNaCidade = await _service.BuscarPorCidade(cidade);
+        return feirantesNaCidade.Any() ? Ok(feirantesNaCidade) : NotFound();
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Feirante novo)
     {
-        _context.Feirantes.Add(novo);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetById), new { id = novo.Id }, novo);
+        var criado = await _service.Adicionar(novo);
+        return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] Feirante atualizacao)
     {
-        var feirante = await _context.Feirantes.FindAsync(id);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        if (feirante == null) return NotFound();
-
-        feirante.Nome = atualizacao.Nome;
-        feirante.Cidade = atualizacao.Cidade;
-        feirante.ProdutoPrincipal = atualizacao.ProdutoPrincipal;
-
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        var atualizado = await _service.Atualizar(id, atualizacao);
+        return atualizado ? NoContent() : NotFound();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var feirante = await _context.Feirantes.FindAsync(id);
-
-        if (feirante == null) return NotFound();
-
-        _context.Feirantes.Remove(feirante);
-
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        var removido = await _service.Remover(id);
+        return removido ? NoContent() : NotFound();
     }
 }
