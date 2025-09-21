@@ -15,12 +15,16 @@ namespace FeiraDaRoca.Repositories
 
         public async Task<IEnumerable<Produto>> ListarTodos()
         {
-            return await _context.Produtos.ToListAsync();
+            return await _context.Produtos
+                .Include(p => p.Feirante)
+                .ToListAsync();
         }
 
         public async Task<Produto?> BuscarPorId(int id)
         {
-            return await _context.Produtos.FindAsync(id);
+            return await _context.Produtos
+                .Include(p => p.Feirante)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Produto> Adicionar(Produto produto)
