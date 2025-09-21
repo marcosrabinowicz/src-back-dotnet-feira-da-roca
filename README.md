@@ -1,67 +1,106 @@
-# 🐴 Feira da Roça API – Continuação do Projeto (Ciclo 5 em diante)
+# Feira da Roça API
 
-Este README documenta a continuação do projeto **Feira da Roça API**, agora estruturado com camadas organizadas e recursos mais avançados.
+API simples para gerenciamento de Feirantes e Produtos, desenvolvida em
+**.NET 8**, utilizando **EF Core** com **SQLite**.
 
----
+------------------------------------------------------------------------
 
-## ✅ Estado atual do projeto
+## 🚜 Arquitetura
 
-- CRUD completo para **Feirantes** e **Produtos**
-- Relacionamento 1:N entre `Feirante` e `Produto`
-- Banco de dados **SQLite** com EF Core
-- Camadas implementadas:
-  - Controller → Service → Repository
-- Validações com DataAnnotations aplicadas
-- Swagger documentando todos os endpoints
-- Testes realizados com Postman (collection incluída)
-- Código versionado no GitHub com histórico limpo
+O projeto segue o padrão de camadas: - **Controller** → recebe as
+requisições HTTP. - **Service** → orquestra regras de negócio. -
+**Repository** → acesso ao banco de dados via EF Core. - **DbContext** →
+configuração do SQLite e entidades.
 
----
+------------------------------------------------------------------------
 
-## 🐞 Bugs registrados para resolver
+## 📂 Estrutura do Projeto
 
-- [ ] `POST /produtos` retorna `Feirante: null` mesmo com `FeiranteId` válido
-- [ ] `GET /feirantes` não carrega produtos se não usar `.Include(f => f.Produtos)`
-  - Corrigido com `ReferenceHandler.IgnoreCycles` no `Program.cs`
+    FeiraDaRoca/
+     ┣ Controllers/
+     ┣ Data/
+     ┣ Models/
+     ┣ Repositories/
+     ┣ Services/
+     ┣ Program.cs
+     ┗ README.md
 
----
+------------------------------------------------------------------------
 
-## 📌 Próximos passos (a partir deste ciclo)
+## ✅ Funcionalidades
 
-- [ ] Criar filtros nos endpoints (`?cidade=...`, `?feiranteId=...`)
-- [ ] Implementar paginação (`page`, `pageSize`)
-- [ ] Adicionar testes automatizados com xUnit
-- [ ] Incluir comentários XML para melhorar o Swagger
-- [ ] Preparar o deploy da API para uso público
-- [ ] (Opcional) Criar frontend em React/Vue para consumo da API
+### Feirantes
 
----
+-   `GET /feirantes` → lista todos os feirantes.
+-   `GET /feirantes/{id}` → busca feirante por id.
+-   `GET /feirantes/cidade/{cidade}` → lista feirantes por cidade.
+-   `POST /feirantes` → cadastra novo feirante.
+-   `PUT /feirantes/{id}` → atualiza feirante existente.
+-   `DELETE /feirantes/{id}` → remove feirante.
+
+### Produtos
+
+-   `GET /produtos` → lista todos os produtos (com feirante).
+-   `GET /produtos/{id}` → busca produto por id (com feirante).
+-   `POST /produtos` → cadastra novo produto.
+-   `PUT /produtos/{id}` → atualiza produto existente.
+-   `DELETE /produtos/{id}` → remove produto.
+
+------------------------------------------------------------------------
+
+## 🐞 Bugs corrigidos
+
+-   Carregamento dos relacionamentos corrigido com `.Include`:
+    -   Produtos agora trazem Feirante.
+    -   Feirantes agora trazem Produtos.
+
+------------------------------------------------------------------------
+
+## 📌 Próximos Passos
+
+-   Criar **DTOs** para controlar dados retornados em cada endpoint.
+-   Implementar **testes automatizados** com xUnit.
+-   Adicionar **filtros e paginação** quando houver frontend.
+-   Preparar **deploy** no site da Neshama Tech.
+
+------------------------------------------------------------------------
 
 ## 🚀 Como rodar
 
-```bash
+1.  Clone o repositório:
+
+``` bash
+git clone https://github.com/seu-usuario/feira-da-roca-api.git
+```
+
+2.  Restaure os pacotes:
+
+``` bash
 dotnet restore
+```
+
+3.  Aplique as migrations:
+
+``` bash
 dotnet ef database update
+```
+
+4.  Rode a aplicação:
+
+``` bash
 dotnet run
 ```
 
-Acesse o Swagger:
+5.  Acesse o Swagger:
 
+```{=html}
+<!-- -->
 ```
-http://localhost:5000/swagger
-```
+    https://localhost:5001/swagger
 
----
+------------------------------------------------------------------------
 
-## 📫 Contato
+## ☕ Estilo Burrinho.NET
 
-Desenvolvido por **Marcos Rabinowicz – Neshama Tech**  
-Com carinho, simplicidade e código raiz 🐴☕
-
----
-
-## ✅ Coleção do postman
-
-Acesse o arquivo:
-
-feira-da-roca-api.postman_collection.json
+Simples, direto, como um café no copo americano. Cada endpoint faz a sua
+parte: entrada → processamento → saída.
