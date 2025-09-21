@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using FeiraDaRoca.Models;
-using FeiraDaRoca.Data;
 using FeiraDaRoca.Services;
 
 namespace FeiraDaRoca.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProdutosController(AppDbContext context, IProdutoService service) : ControllerBase
+public class ProdutosController : ControllerBase
 {
-    private readonly AppDbContext _context = context;
+    private readonly IProdutoService _service;
 
-    private readonly IProdutoService _service = service;
+    public ProdutosController(IProdutoService service)
+    {
+        _service = service;
+    }
 
     [HttpGet]
     public async Task<IActionResult> Get()
@@ -24,47 +25,34 @@ public class ProdutosController(AppDbContext context, IProdutoService service) :
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var produto = await _context.Produtos.FindAsync(id);
-
+        var produto = await _service.BuscarPorId(id);
         return produto == null ? NotFound() : Ok(produto);
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] Produto novo)
     {
-        _context.Produtos.Add(novo);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetById), new { id = novo.Id }, novo);
+        var criado = await _service.Adicionar(novo);
+        return CreatedAtAction(nameof(GetById), new { id = criado.Id }, criado);
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] Produto atualizacao)
     {
-        var produto = await _context.Produtos.FindAsync(id);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-        if (produto == null) return NotFound();
-
-        produto.Nome = atualizacao.Nome;
-        produto.Preco = atualizacao.Preco;
-
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        var atualizado = await _service.Atualizar(id, atualizacao);
+        return atualizado ? NoContent() : NotFound();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var produto = await _context.Produtos.FindAsync(id);
-
-        if (produto == null) return NotFound();
-
-        _context.Produtos.Remove(produto);
-
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        var removido = await _service.Remover(id);
+        return removido ? NoContent() : NotFound();
     }
 }
